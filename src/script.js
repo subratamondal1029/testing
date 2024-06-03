@@ -1,9 +1,7 @@
-const button = document.querySelector('button')
-button.addEventListener('click', (e) =>{
-    shareScreenshotOnSocialMedia('linkedin')
-})
+const button = document.querySelector('#shareBtn')
+button.addEventListener('click', shareScreenshot)
 
-function shareScreenshotOnSocialMedia(platform) {
+function shareScreenshot() {
     html2canvas(document.getElementById('capture'))
     .then(function(canvas) {
         canvas.toBlob((blob) => {
@@ -12,21 +10,28 @@ function shareScreenshotOnSocialMedia(platform) {
 
             if (navigator.share) {
                 navigator.share({
-                    title: 'resu',
-                    text: 'Check out this screenshot!',
-                    files: [file] // Add the file to the share data
+                    title: 'Result',
+                    text: 'Check out this Result | App Link:- https://subrataprojects.netlify.app/quiz_app !',
+                    files: [file]
                 })
-                .then(() => console.log('Screenshot shared successfully.'))
-                .catch((error) => console.error('Error sharing screenshot:', error));
-            }else{
-                alert('your browser does not support share feature You can download it and share')
-                const a = document.createElement('a')
-            a.href = url
-            a.download = "screenshort.png"
-            a.click()
-            }
+                .catch(() => alert('Error sharing Result'));
+            }else showPop(url)
 
-            
         }, 'image/png');
     });
+}
+
+function showPop(url){
+    document.getElementById('popUp').style.transform = 'scale(1)'
+    const downloadBtn = document.getElementById('downloadResult')
+        downloadBtn.href = url
+        downloadBtn.download = "screenshort.png"
+        
+    const closeBtns = document.querySelectorAll('.popClose')
+    closeBtns.forEach((btn) =>{
+        btn.addEventListener('click', (e) =>{
+            e.preventDefault()
+            document.getElementById('popUp').style.transform = 'scale(0)'
+        })
+    })
 }
