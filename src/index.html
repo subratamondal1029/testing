@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CallBack Hell</title>
+    <link rel="stylesheet" href="output.css">
+</head>
+<body class="bg-black text-white flex justify-center items-center h-screen flex-col gap-3 relative">
+   <div class="bg-white text-black w-[400px] h-[400px] rounded-lg flex items-center justify-center" id="capture">
+    <h1 class="text-4xl font-bold">Testing screenshort</h1>
+   </div> 
+
+   <button type="button" class="border py-3 px-4 bg-blue-500 rounded-lg font-bold text-gray-200">share</button>
+
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        const button = document.querySelector('button')
+button.addEventListener('click', (e) =>{
+    shareScreenshotOnSocialMedia('linkedin')
+})
+
+function shareScreenshotOnSocialMedia(platform) {
+    html2canvas(document.getElementById('capture'))
+    .then(function(canvas) {
+        canvas.toBlob((blob) => {
+            const url = URL.createObjectURL(blob);
+            const file = new File([blob], 'screenshot.png', { type: 'image/png' });
+
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Screenshot',
+                    text: 'Check out this screenshot!',
+                    files: [file] // Add the file to the share data
+                })
+                .then(() => console.log('Screenshot shared successfully.'))
+                .catch((error) => console.error('Error sharing screenshot:', error));
+            }else{
+                alert('your browser does not support share feature You can download it and share')
+                const a = document.createElement('a')
+            a.href = url
+            a.download = "screenshort.png"
+            a.click()
+            }
+
+            
+        }, 'image/png');
+    });
+}
+    </script>
+</body>
+</html>
