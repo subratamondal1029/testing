@@ -1,1 +1,7 @@
 node_modules
+main.html
+package-lock.json
+package.json
+script.js
+style.css
+.parcel-cache
